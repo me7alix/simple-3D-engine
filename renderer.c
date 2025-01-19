@@ -32,6 +32,14 @@ Vector3 rotateX(Vector3 v, float t){
   }; 
 }
 
+typedef enum{
+  AXIS_X, AXIS_Y, AXIS_Z
+} Axis;
+
+typedef struct {
+  Axis
+} Rotation;
+
 typedef struct {
   Vector3 pos;
   Vector3 ang;
@@ -135,28 +143,28 @@ int main(void){
     .ang = (Vector3){0, 0, 0},
   };
 
-  RenderObject robj = {
+  RenderObject car = {
     .rm = parse_obj("models/car.obj"),
     .pos = (Vector3){0, -2.1, 4},
     .sc = (Vector3){1, 1, 1},
     .ang = (Vector3){0, 0, 0},
   };
 
-  RenderObject robj2 = {
+  RenderObject apple = {
     .rm = parse_obj("models/apple.obj"),
     .pos = (Vector3){0, 0.3, -4},
     .sc = (Vector3){0.2, 0.2, 0.2},
     .ang = (Vector3){0, 0, 0},
   };
 
-  RenderObject robj3 = {
+  RenderObject cube = {
     .rm = parse_obj("models/cube.obj"),
     .pos = (Vector3){0, -1.1, -4},
     .sc = (Vector3){0.4, 1, 0.4},
     .ang = (Vector3){0, 0, 0},
   };
 
-  RenderObject robj4 = {
+  RenderObject plane = {
     .rm = parse_obj("models/plane.obj"),
     .pos = (Vector3){0, -2.1, 0},
     .sc = (Vector3){8, 1, 8},
@@ -166,25 +174,22 @@ int main(void){
   while(!WindowShouldClose()){
     movement(&cam);
 
-    //robj2.sc.x = 1+sin(GetTime());
-    //robj2.sc.y = 1+sin(GetTime()+PI*2*0.33);
-    //robj2.sc.z = 1+sin(GetTime()+PI*2*0.66);
-    robj2.ang.y += GetFrameTime() * PI * 2 * 0.14;
-    robj2.ang.z += GetFrameTime() * PI * 2 * 0.14;
-    robj2.ang.x += GetFrameTime() * -PI * 2 * 0.14;
+    apple.ang.y += GetFrameTime() * PI * 2 * 0.14;
+    apple.ang.z += GetFrameTime() * PI * 2 * 0.14;
+    apple.ang.x += GetFrameTime() * -PI * 2 * 0.14;
 
-    robj.ang.y += GetFrameTime();
-    robj.pos.z += 6 * GetFrameTime() * sin(robj.ang.y+PI/2.0);
-    robj.pos.x += 6 * GetFrameTime() * cos(robj.ang.y+PI/2.0);
+    car.ang.y += GetFrameTime();
+    car.pos.z += 6 * GetFrameTime() * sin(car.ang.y+PI/2.0);
+    car.pos.x += 6 * GetFrameTime() * cos(car.ang.y+PI/2.0);
     
     BeginDrawing();
     ClearBackground(BLACK);
     
-    draw_render_object(&robj, cam);
-    draw_render_object(&robj2, cam);
-    draw_render_object(&robj3, cam);
-    draw_render_object(&robj4, cam);
-    
+    draw_render_object(&car, cam);
+    draw_render_object(&apple, cam);
+    draw_render_object(&cube, cam);
+    draw_render_object(&plane, cam);
+
     EndDrawing();
   }
   
