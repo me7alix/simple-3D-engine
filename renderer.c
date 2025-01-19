@@ -32,14 +32,6 @@ Vector3 rotateX(Vector3 v, float t){
   }; 
 }
 
-typedef enum{
-  AXIS_X, AXIS_Y, AXIS_Z
-} Axis;
-
-typedef struct {
-  Axis
-} Rotation;
-
 typedef struct {
   Vector3 pos;
   Vector3 ang;
