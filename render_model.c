@@ -5,48 +5,48 @@
 #include "render_model.h"
 
 char** split(const char* str, const char* delimiter, int* count) {
-    char* strCopy = strdup(str);
-    if (strCopy == NULL) {
-        *count = 0;
-        return NULL;
-    }
+  char* strCopy = strdup(str);
+  if (strCopy == NULL) {
+    *count = 0;
+    return NULL;
+  }
 
-    int capacity = 64;
-    char** tokens = malloc(capacity * sizeof(char*));
-    if (tokens == NULL) {
-        free(strCopy);
-        *count = 0;
-        return NULL;
-    }
-
-    int index = 0;
-    char* token = strtok(strCopy, delimiter);
-    while (token != NULL) {
-        if (index >= capacity) {
-            capacity *= 2;
-            char** newTokens = realloc(tokens, capacity * sizeof(char*));
-            if (newTokens == NULL) {
-                free(tokens);
-                free(strCopy);
-                *count = 0;
-                return NULL;
-            }
-            tokens = newTokens;
-        }
-        tokens[index++] = strdup(token);
-        token = strtok(NULL, delimiter);
-    }
-
-    *count = index;
+  int capacity = 64;
+  char** tokens = malloc(capacity * sizeof(char*));
+  if (tokens == NULL) {
     free(strCopy);
-    return tokens;
+    *count = 0;
+    return NULL;
+  }
+
+  int index = 0;
+  char* token = strtok(strCopy, delimiter);
+  while (token != NULL) {
+    if (index >= capacity) {
+      capacity *= 2;
+      char** newTokens = realloc(tokens, capacity * sizeof(char*));
+      if (newTokens == NULL) {
+	free(tokens);
+	free(strCopy);
+	*count = 0;
+	return NULL;
+      }
+      tokens = newTokens;
+    }
+    tokens[index++] = strdup(token);
+    token = strtok(NULL, delimiter);
+  }
+
+  *count = index;
+  free(strCopy);
+  return tokens;
 }
 
 void freeTokens(char** tokens, int count) {
-    for (int i = 0; i < count; i++) {
-        free(tokens[i]);
-    }
-    free(tokens);
+  for (int i = 0; i < count; i++) {
+    free(tokens[i]);
+  }
+  free(tokens);
 }
 
 RenderModel parse_obj(const char *filename) {
@@ -110,8 +110,8 @@ RenderModel parse_obj(const char *filename) {
 	int cnt;
 	char **fpms = split(pms[i], "//", &cnt);
 	if(cnt == 2){
-	 f.vi[f.cnt] = strtol(fpms[0], &endptr, 10);
-	 f.vni[f.cnt++] = strtol(fpms[1], &endptr, 10);
+	  f.vi[f.cnt] = strtol(fpms[0], &endptr, 10);
+	  f.vni[f.cnt++] = strtol(fpms[1], &endptr, 10);
 	} else {
 	  freeTokens(fpms, cnt);
 	  fpms = split(pms[i], "/", &cnt);
