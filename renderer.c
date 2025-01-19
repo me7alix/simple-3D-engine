@@ -6,6 +6,7 @@
 
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
+#define FOV 70.0
 
 Vector3 rotateZ(Vector3 v, float t){
   return (Vector3){
@@ -58,15 +59,23 @@ Vector3 calc(Vector3 v, RenderObject *r, Cam c){
   return v;
 }
 
-void draw_triangle(Vector3 v1, Vector3 v2, Vector3 v3){
-  if(v1.z < 0 || v2.z < 0 || v3.z < 0) return;
-  Vector2 p1 = {v1.x/v1.z*SCREEN_WIDTH+0.5*SCREEN_WIDTH, -v1.y/v1.z*SCREEN_WIDTH+0.5*SCREEN_HEIGHT};
-  Vector2 p2 = {v2.x/v2.z*SCREEN_WIDTH+0.5*SCREEN_WIDTH, -v2.y/v2.z*SCREEN_WIDTH+0.5*SCREEN_HEIGHT};
-  Vector2 p3 = {v3.x/v3.z*SCREEN_WIDTH+0.5*SCREEN_WIDTH, -v3.y/v3.z*SCREEN_WIDTH+0.5*SCREEN_HEIGHT};
-  DrawLineV(p1, p2, WHITE);
-  DrawLineV(p1, p3, WHITE);
-  DrawLineV(p3, p2, WHITE);
-  //DrawTriangle(p1, p2, p3, WHITE);
+void draw_triangle(Vector3 v1, Vector3 v2, Vector3 v3) {
+    if (v1.z < 0 || v2.z < 0 || v3.z < 0) return;
+
+    float aspectRatio = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
+    float fovScale = tanf(FOV * 0.5f * (PI / 180.0f));
+
+    Vector2 p1 = { (v1.x / (v1.z * fovScale * aspectRatio)) * SCREEN_WIDTH * 0.5f + 0.5f * SCREEN_WIDTH,
+                   -(v1.y / (v1.z * fovScale)) * SCREEN_HEIGHT * 0.5f + 0.5f * SCREEN_HEIGHT };
+    Vector2 p2 = { (v2.x / (v2.z * fovScale * aspectRatio)) * SCREEN_WIDTH * 0.5f + 0.5f * SCREEN_WIDTH,
+                   -(v2.y / (v2.z * fovScale)) * SCREEN_HEIGHT * 0.5f + 0.5f * SCREEN_HEIGHT };
+    Vector2 p3 = { (v3.x / (v3.z * fovScale * aspectRatio)) * SCREEN_WIDTH * 0.5f + 0.5f * SCREEN_WIDTH,
+                   -(v3.y / (v3.z * fovScale)) * SCREEN_HEIGHT * 0.5f + 0.5f * SCREEN_HEIGHT };
+
+    DrawLineV(p1, p2, WHITE);
+    DrawLineV(p1, p3, WHITE);
+    DrawLineV(p3, p2, WHITE);
+    // DrawTriangle(p1, p2, p3, WHITE);
 }
 
 void draw_render_object(RenderObject *r, Cam c){
