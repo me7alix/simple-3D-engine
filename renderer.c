@@ -94,7 +94,10 @@ Vector3 calc(Vector3 v, RenderObject *r, Vector3 *nv){
 }
 
 void calc_triangle(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 n) {
-  if (v1.z < 0 || v2.z < 0 || v3.z < 0) return;
+  if (v1.z < 0 && v2.z < 0 && v3.z < 0) return;
+  if(v1.z < 0) v1.z = 0.01;
+  if(v2.z < 0) v2.z = 0.01;
+  if(v3.z < 0) v3.z = 0.01;
 
   float aspectRatio = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
   float fovScale = tanf(FOV * 0.5f * (PI / 180.0f));
