@@ -1,1 +1,1 @@
-gcc renderer.c render_model.c -o prog -lraylib -lm && ./prog
+gcc main.c src/renderer.c src/render_model.c -o prog -lraylib -lm && ./prog
